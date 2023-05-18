@@ -1,17 +1,11 @@
 {
   "private": true,
   "engines": {
-    "yarn": "^1.22.0"
+    "pnpm": ">7.0.0"
   },
-  "workspaces": [
-    "site",
-    "scripts/eslint"
-  ],
   "scripts": {
-    "dev": "yarn --cwd site next dev",
-    "build": "yarn --cwd site next build",
-    "start": "yarn --cwd site next start",
-    "lint": "yarn --cwd site lint",
+    "dev": "pnpm --dir site dev",
+    "lint": "pnpm -r lint",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
