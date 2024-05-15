@@ -1,7 +1,10 @@
 {
   "name": "alexhunt.dev",
-  "version": "0.1.0",
+  "version": "3.0.0",
   "private": true,
+  "author": "Alex Hunt <hello@alexhunt.io>",
+  "description": "Personal website",
+  "homepage": "https://alexhunt.dev",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
