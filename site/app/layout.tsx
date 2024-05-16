@@ -17,10 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className="m-30">
+        <header className="mx-30 my-60">
           <Hero
             title={metadata.title as string}
             bio="React Native at Meta. Loves dev tooling and productivity hacks. Avid climber and snowboarder. Optimist."
+            imageUrl="/profile.jpg"
           />
         </header>
         <main className="flex flex-col m-30">{children}</main>

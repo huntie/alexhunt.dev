@@ -3,20 +3,29 @@
 @tailwind utilities;
 
 :root {
-  /* Colours */
+  /* Palette */
+  --color-white: white;
+
+  /* Theme colours */
   --color-background: #fbfaf9;
   --color-text-primary: #37352f;
   --color-text-secondary: #b3b3b3;
   --color-grey-light: #ececec;
+
+  /* Other */
+  --color-social-x: #0e1417;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Colours */
+    /* Theme colours */
     --color-background: #1b1a1a;
-    --color-text-primary: white;
+    --color-text-primary: var(--color-white);
     --color-text-secondary: #ddd;
     --color-grey-light: #545454;
+
+    /* Other */
+    --color-social-x: #3e4447;
   }
 }
 
