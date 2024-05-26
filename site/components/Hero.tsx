@@ -11,7 +11,7 @@ export default function Hero({ title, bio, imageUrl }: Props): JSX.Element {
   return (
     <div className="flex flex-col items-start mb-30">
       <Image
-        className="mb-24 rounded-full"
+        className="mb-24 rounded-full bg-light-grey"
         width="45"
         height="45"
         src={imageUrl}

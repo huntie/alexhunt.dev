@@ -5,12 +5,16 @@
 :root {
   /* Palette */
   --color-white: white;
+  --color-blue: #0d94f4;
+  --color-blue-light: #7fcaff;
 
   /* Theme colours */
   --color-background: #fbfaf9;
   --color-text-primary: #37352f;
   --color-text-secondary: #7e7e7e;
-  --color-grey-light: #ececec;
+  --color-text-link: var(--color-blue);
+  --color-grey-lightest: #eee;
+  --color-grey-light: #e2e2e2;
 
   /* Other */
   --color-social-x: #0e1417;
@@ -22,6 +26,8 @@
     --color-background: #1b1a1a;
     --color-text-primary: var(--color-white);
     --color-text-secondary: #ddd;
+    --color-text-link: var(--color-blue-light);
+    --color-grey-lightest: #2e2e2e;
     --color-grey-light: #545454;
 
     /* Other */

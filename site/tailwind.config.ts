@@ -2,6 +2,8 @@ import type { Config } from 'tailwindcss';
 
 const palette = {
   white: 'var(--color-white)',
+  blue: 'var(--color-blue)',
+  'blue-light': 'var(--color-blue-light)',
 };
 
 const config: Config = {
@@ -15,7 +17,9 @@ const config: Config = {
       background: 'var(--color-background)',
       primary: 'var(--color-text-primary)',
       secondary: 'var(--color-text-secondary)',
+      link: 'var(--color-text-link)',
       'grey-light': 'var(--color-grey-light)',
+      'grey-lightest': 'var(--color-grey-lightest)',
       'social-x': 'var(--color-social-x)',
     },
     fontFamily: {
@@ -24,6 +28,7 @@ const config: Config = {
       system: ['-apple-system', 'sans-serif'],
     },
     spacing: {
+      '0': '0',
       '2': '2px',
       '4': '4px',
       '5': '5px',
@@ -35,14 +40,18 @@ const config: Config = {
       '24': '24px',
       '30': '30px',
       '60': '60px',
+      '140': '140px',
+      '180': '180px',
     },
     extend: {
       fontSize: {
-        xs: '0.625rem',
+        xxs: '0.625rem',
+        xs: '0.75rem',
         sm: '0.875rem',
       },
     },
   },
   plugins: [],
 };
+
 export default config;
