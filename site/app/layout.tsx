@@ -18,20 +18,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <header className="mx-30 my-60">
-          <Hero
-            title={metadata.title as string}
-            bio="React Native at Meta. Loves dev tooling and productivity hacks. Avid climber and snowboarder. Optimist."
-            imageUrl="/profile.jpg"
-          />
-          <SocialLinks
-            links={[
-              'https://github.com/huntie',
-              'https://instagram.com/instahuntie',
-            ]}
-          />
-        </header>
-        <main className="flex flex-col m-30">{children}</main>
+        <div className="max-w-560 md:max-w-1800 mx-auto md:flex">
+          <header className="flex flex-col mx-30 py-60 md:justify-between md:h-screen md:max-w-325 md:ml-40 md:py-80 lg:mx-85">
+            <Hero
+              title={metadata.title as string}
+              bio="React Native at Meta. Loves dev tooling and productivity hacks. Avid climber and snowboarder. Optimist."
+              imageUrl="/profile.jpg"
+            />
+            <SocialLinks
+              links={[
+                'https://github.com/huntie',
+                'https://instagram.com/instahuntie',
+              ]}
+            />
+          </header>
+          <main className="flex flex-1 flex-col items-center px-30 md:h-screen md:overflow-y-scroll md:pl-16 md:-ml-16 md:py-80 lg:pr-85">
+            <div className="md:max-w-560">{children}</div>
+          </main>
+        </div>
       </body>
     </html>
   );
