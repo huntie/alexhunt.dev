@@ -2,9 +2,8 @@
 /node_modules
 
 # Generated files
-/.next/
-/out/
-.vercel
+/.next
+/out
 
 # Build output
 /build
