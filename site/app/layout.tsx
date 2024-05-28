@@ -6,8 +6,13 @@ import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
+// TODO: Fetch from Notion
+const bio =
+  'React Native at Meta. Loves dev tooling and productivity hacks. Avid climber and snowboarder. Optimist.';
+
 export const metadata: Metadata = {
-  title: 'Alex Hunt',
+  title: 'Alex Hunt – Software Engineer',
+  description: bio,
 };
 
 export default function RootLayout({
@@ -20,11 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="max-w-560 md:max-w-1800 mx-auto md:flex">
           <header className="flex flex-col mx-30 py-60 md:justify-between md:h-screen md:max-w-325 md:ml-40 md:py-80 lg:mx-85">
-            <Hero
-              title={metadata.title as string}
-              bio="React Native at Meta. Loves dev tooling and productivity hacks. Avid climber and snowboarder. Optimist."
-              imageUrl="/profile.jpg"
-            />
+            <Hero title="Alex Hunt" bio={bio} imageUrl="/profile.jpg" />
             <SocialLinks
               links={[
                 'https://github.com/huntie',
