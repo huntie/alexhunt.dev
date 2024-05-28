@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Hero from '../components/Hero.tsx';
@@ -37,6 +38,7 @@ export default function RootLayout({
             <div className="md:max-w-560">{children}</div>
           </main>
         </div>
+        <Analytics />
       </body>
     </html>
   );
