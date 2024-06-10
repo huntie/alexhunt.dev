@@ -14,24 +14,5 @@
   "devDependencies": {
     "prettier": "^3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4"
-  },
-  "prettier": {
-    "arrowParens": "avoid",
-    "singleQuote": true,
-    "trailingComma": "all",
-    "plugins": [
-      "prettier-plugin-organize-imports"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "*.code-workspace",
-          "tsconfig.json"
-        ],
-        "options": {
-          "parser": "json-stringify"
-        }
-      }
-    ]
   }
 }
