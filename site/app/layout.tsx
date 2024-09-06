@@ -1,32 +1,42 @@
-import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
+
+import { Analytics } from '@vercel/analytics/react';
 import { Inter } from 'next/font/google';
 import Hero from '../components/Hero.tsx';
 import SocialLinks from '../components/SocialLinks.tsx';
+import getProperties from '../content/getProperties.tsx';
+
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
-// TODO: Fetch from Notion
-const bio =
-  'React Native at Meta. Loves dev tooling and productivity hacks. Avid climber and snowboarder. Optimist.';
+export async function generateMetadata(): Promise<Metadata> {
+  const { bio } = await getProperties();
 
-export const metadata: Metadata = {
-  title: 'Alex Hunt – Software Engineer',
-  description: bio,
-};
+  return {
+    title: 'Alex Hunt – Software Engineer',
+    description: bio,
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { bio } = await getProperties();
+
   return (
-    <html lang="en">
+    <html lang="en-GB">
       <body className={inter.className}>
         <div className="max-w-560 md:max-w-1800 mx-auto md:flex">
           <header className="flex flex-col mx-30 py-60 md:justify-between md:h-screen md:max-w-325 md:ml-40 md:py-80 lg:mx-85">
-            <Hero title="Alex Hunt" bio={bio} imageUrl="/profile.jpg" />
+            <Hero
+              title="Alex Hunt"
+              bio={bio}
+              imageUrl="/profile.jpg"
+              twitterHandle="alxhnt"
+            />
             <SocialLinks
               links={[
                 'https://github.com/huntie',

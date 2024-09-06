@@ -6,7 +6,8 @@ export default function FollowButton({ handle }: Props): JSX.Element {
   return (
     <a
       className="flex px-12 items-center rounded-full bg-social-x text-white transition duration-150 hover:opacity-80"
-      href={`https://twitter.com/intent/follow?&screen_name=${handle}`}
+      href={`https://x.com/intent/follow?&screen_name=${handle}`}
+      target="_blank"
     >
       <svg
         className="block my-5 mr-10"

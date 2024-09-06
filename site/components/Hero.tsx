@@ -5,9 +5,15 @@ type Props = Readonly<{
   title: string;
   bio: string;
   imageUrl: string;
+  twitterHandle: string;
 }>;
 
-export default function Hero({ title, bio, imageUrl }: Props): JSX.Element {
+export default function Hero({
+  title,
+  bio,
+  imageUrl,
+  twitterHandle,
+}: Props): JSX.Element {
   return (
     <div className="flex flex-col items-start mb-30">
       <Image
@@ -16,10 +22,11 @@ export default function Hero({ title, bio, imageUrl }: Props): JSX.Element {
         height="45"
         src={imageUrl}
         alt="Profile image"
+        priority
       />
       <h1 className="mb-8 font-display font-bold text-primary">{title}</h1>
       <p className="mb-18 text-primary">{bio}</p>
-      <FollowButton handle="alxhnt" />
+      <FollowButton handle={twitterHandle} />
     </div>
   );
 }
