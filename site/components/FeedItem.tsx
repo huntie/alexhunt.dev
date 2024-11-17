@@ -1,18 +1,10 @@
+import type { FeedItem as FeedItemType } from '../content/types.tsx';
+
 import { differenceInCalendarDays, format, isToday, parseISO } from 'date-fns';
 import Image from 'next/image';
 
-type Item = {
-  date: string;
-  type: 'link' | 'post';
-  label?: string;
-  url: string;
-  title?: string;
-  content?: string;
-  attachment?: string;
-};
-
 type Props = Readonly<{
-  item: Item;
+  item: FeedItemType;
 }>;
 
 export default function FeedItem({
@@ -31,7 +23,7 @@ export default function FeedItem({
             {type === 'post' ? <>&ensp;•&ensp;View on X</> : null}
           </p>
           {label != null ? (
-            <span className="px-8 py-2 rounded rounded-md bg-grey-light text-secondary text-xs">
+            <span className="px-8 py-2 rounded-md bg-grey-light text-secondary text-xs">
               {label}
             </span>
           ) : null}
@@ -47,8 +39,14 @@ export default function FeedItem({
           </p>
         ) : null}
         {attachment != null ? (
-          <div className="relative aspect-video h-140 md:h-180 mt-18 rounded rounded-md bg-light-grey overflow-hidden">
-            <Image className="object-cover" src={attachment} alt="" fill />
+          <div className="relative aspect-video h-140 md:h-180 mt-18 rounded-md bg-light-grey overflow-hidden">
+            <Image
+              className="object-cover"
+              src={attachment}
+              alt={type === 'post' ? 'Post image' : 'Link preview'}
+              fill
+              sizes="640px,960px" // @2x, @3x
+            />
           </div>
         ) : null}
       </div>
