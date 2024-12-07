@@ -35,7 +35,7 @@ export default async function RootLayout({
               title="Alex Hunt"
               bio={bio}
               imageUrl="/profile.jpg"
-              twitterHandle="alxhnt"
+              twitterHandle="huntie"
             />
             <SocialLinks
               links={[
