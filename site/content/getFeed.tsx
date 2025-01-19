@@ -5,6 +5,7 @@ import type { FeedItem } from './types';
 import { isFullPage } from '@notionhq/client';
 import invariant from 'invariant';
 import { cache } from 'react';
+import cacheFeedImage from './cacheFeedImage';
 import { notion } from './notion';
 
 const FEED_DATABASE_ID = '341919861c8447ea8a6ae36b0ad8c730';
@@ -26,46 +27,25 @@ const getFeed = cache(
       database_id: FEED_DATABASE_ID,
       filter: {
         and: [
-          {
-            property: 'Date',
-            date: NONEMPTY_FILTER,
-          },
-          {
-            property: 'Type',
-            select: NONEMPTY_FILTER,
-          },
-          {
-            property: 'URL',
-            url: NONEMPTY_FILTER,
-          },
+          { property: 'Date', date: NONEMPTY_FILTER },
+          { property: 'Type', select: NONEMPTY_FILTER },
+          { property: 'URL', url: NONEMPTY_FILTER },
           {
             or: [
-              {
-                property: 'Title',
-                title: NONEMPTY_FILTER,
-              },
-              {
-                property: 'Content',
-                rich_text: NONEMPTY_FILTER,
-              },
+              { property: 'Title', title: NONEMPTY_FILTER },
+              { property: 'Content', rich_text: NONEMPTY_FILTER },
             ],
           },
         ],
       },
       sorts: [
-        {
-          property: 'Date',
-          direction: 'descending',
-        },
-        {
-          property: 'Type',
-          direction: 'descending',
-        },
+        { property: 'Date', direction: 'descending' },
+        { property: 'Type', direction: 'descending' },
       ],
       start_cursor: startCursor,
       page_size: pageSize,
     });
-    const items = [];
+    const itemPromises: Array<Promise<FeedItem>> = [];
 
     for (const page of response.results) {
       if (!isFullPage(page)) {
@@ -96,14 +76,8 @@ const getFeed = cache(
         page.properties['Content']?.type === 'rich_text',
         'Expected property "Content" to be of type "rich_text"',
       );
-      invariant(
-        page.properties['Attachment']?.type === 'files',
-        'Expected property "Attachment" to be of type "files"',
-      );
 
-      const attachment = page.properties['Attachment'].files[0];
-
-      const item: FeedItem = {
+      const item: Omit<FeedItem, 'imageUrl'> = {
         id: page.id,
         date: page.properties['Date'].date!.start,
         type: page.properties['Type'].select!.name === 'Post' ? 'post' : 'link',
@@ -113,13 +87,17 @@ const getFeed = cache(
         content: page.properties['Content'].rich_text
           .map(text => text.plain_text)
           .join(''),
-        attachment: attachment?.type == 'file' ? attachment.file.url : null,
       };
 
-      items.push(item);
+      itemPromises.push(
+        cacheFeedImage(page).then(imageUrl => ({
+          ...item,
+          imageUrl,
+        })),
+      );
     }
 
-    return items;
+    return Promise.all(itemPromises);
   },
 );
 

@@ -8,7 +8,7 @@ type Props = Readonly<{
 }>;
 
 export default function FeedItem({
-  item: { type, title, content, date, url, label, attachment },
+  item: { type, title, content, date, url, label, imageUrl },
 }: Props): JSX.Element {
   return (
     <article className="group relative z-0 mb-60">
@@ -38,11 +38,11 @@ export default function FeedItem({
             {type === 'post' ? formatPost(content) : content}
           </p>
         ) : null}
-        {attachment != null ? (
+        {imageUrl != null ? (
           <div className="relative aspect-video h-140 md:h-180 mt-18 rounded-md bg-light-grey overflow-hidden">
             <Image
               className="object-cover"
-              src={attachment}
+              src={imageUrl}
               alt={type === 'post' ? 'Post image' : 'Link preview'}
               fill
               sizes="640px,960px" // @2x, @3x

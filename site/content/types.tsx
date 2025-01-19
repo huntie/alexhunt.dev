@@ -6,5 +6,5 @@ export type FeedItem = {
   url: string;
   title: string | null;
   content: string | null;
-  attachment: string | null;
+  imageUrl: string | null;
 };
