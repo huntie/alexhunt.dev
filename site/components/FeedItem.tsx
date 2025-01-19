@@ -8,15 +8,21 @@ type Props = Readonly<{
 }>;
 
 export default function FeedItem({
-  item: { type, title, content, date, url, label, imageUrl },
+  item: { type, title, content, date, url, label, imageUrl, embed },
 }: Props): JSX.Element {
+  const isBlockLink = embed == null;
+
   return (
     <article className="group relative z-0 mb-60">
-      <a
-        className="absolute block -z-10 -top-16 -bottom-16 -left-16 -right-16 rounded-md text-secondary text-sm transition duration-150 group-hover:bg-grey-lightest"
-        href={url}
-      />
-      <div className="flex flex-col items-start pointer-events-none">
+      {isBlockLink ? (
+        <a
+          className="absolute block -z-10 -top-16 -bottom-16 -left-16 -right-16 rounded-md text-secondary text-sm transition duration-150 group-hover:bg-grey-lightest"
+          href={url}
+        />
+      ) : null}
+      <div
+        className={`flex flex-col items-start ${isBlockLink ? 'pointer-events-none' : ''}`}
+      >
         <div className="flex items-center mb-8">
           <p className="mr-16 text-secondary text-xs font-body">
             <time dateTime={date}>{formatDate(date)}</time>
@@ -49,6 +55,12 @@ export default function FeedItem({
             />
           </div>
         ) : null}
+        {embed != null ? (
+          <div
+            className="mt-18 self-stretch"
+            dangerouslySetInnerHTML={{ __html: embed }}
+          />
+        ) : null}
       </div>
     </article>
   );
@@ -72,7 +84,7 @@ function formatPost(post: string): JSX.Element {
   const highlightRegex = /[@#$]\w+|https?:\/\/\S+/g;
   const elements = [];
 
-  let match;
+  let match: RegExpExecArray | null;
   let lastMatchEnd = 0;
 
   while ((match = highlightRegex.exec(post)) != null) {
@@ -81,7 +93,7 @@ function formatPost(post: string): JSX.Element {
     }
 
     const token = match[0];
-    let url;
+    let url: string;
 
     if (token.startsWith('@')) {
       url = `https://x.com/${token}`;

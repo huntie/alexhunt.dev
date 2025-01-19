@@ -6,7 +6,7 @@ import { isFullPage } from '@notionhq/client';
 import invariant from 'invariant';
 import { cache } from 'react';
 import cacheFeedImage from './cacheFeedImage';
-import { notion } from './notion';
+import { notion, richTextToPlain } from './notion';
 
 const FEED_DATABASE_ID = '341919861c8447ea8a6ae36b0ad8c730';
 
@@ -76,6 +76,10 @@ const getFeed = cache(
         page.properties['Content']?.type === 'rich_text',
         'Expected property "Content" to be of type "rich_text"',
       );
+      invariant(
+        page.properties['Embed']?.type === 'rich_text',
+        'Expected property "Embed" to be of type "rich_text"',
+      );
 
       const item: Omit<FeedItem, 'imageUrl'> = {
         id: page.id,
@@ -83,10 +87,9 @@ const getFeed = cache(
         type: page.properties['Type'].select!.name === 'Post' ? 'post' : 'link',
         label: page.properties['Label'].select?.name ?? null,
         url: page.properties['URL'].url!,
-        title: page.properties['Title'].title[0]?.plain_text,
-        content: page.properties['Content'].rich_text
-          .map(text => text.plain_text)
-          .join(''),
+        title: richTextToPlain(page.properties['Title'].title),
+        content: richTextToPlain(page.properties['Content'].rich_text),
+        embed: richTextToPlain(page.properties['Embed'].rich_text),
       };
 
       itemPromises.push(
