@@ -5,6 +5,7 @@ import { head, put } from '@vercel/blob';
 import invariant from 'invariant';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
+import openGraph from 'open-graph-scraper';
 
 /**
  * Cache the preview image for the given feed item on the server/CDN.
@@ -13,13 +14,30 @@ export default async function cacheFeedImage(
   page: PageObjectResponse,
 ): Promise<string | null> {
   invariant(
+    page.properties['URL']?.type === 'url',
+    'Expected property "URL" to be of type "url"',
+  );
+  invariant(
     page.properties['Image']?.type === 'files',
     'Expected property "Image" to be of type "files"',
   );
 
-  const sourceImage = page.properties['Image'].files[0];
-  if (sourceImage == null || sourceImage.type !== 'file') {
-    // TODO: Fetch Open Graph image when no image is explicitly attached
+  let sourceImageUrl: string | null = null;
+  const customImage = page.properties['Image'].files[0];
+
+  if (customImage?.type === 'file') {
+    // Use image field from Notion page
+    sourceImageUrl = customImage.file.url;
+  } else if (page.properties['URL'].url != null) {
+    // Check for Open Graph image
+    const metadata = await openGraph({
+      url: page.properties['URL'].url,
+    });
+    const [ogImage] = metadata.result.ogImage ?? [];
+    sourceImageUrl = ogImage?.url;
+  }
+
+  if (sourceImageUrl == null) {
     return null;
   }
 
@@ -27,7 +45,8 @@ export default async function cacheFeedImage(
     .update(page.id + '-' + page.last_edited_time)
     .digest('hex')
     .slice(0, 16);
-  const cachePath = 'feed/' + imageKey + path.extname(sourceImage.name);
+  const cachePath =
+    'feed/' + imageKey + path.extname(new URL(sourceImageUrl).pathname);
 
   let result: HeadBlobResult | PutBlobResult;
 
@@ -36,9 +55,9 @@ export default async function cacheFeedImage(
     result = await head(cachePath);
   } catch {
     // Fetch remote image
-    const response = await fetch(sourceImage.file.url, { cache: 'no-store' });
+    const response = await fetch(sourceImageUrl, { cache: 'no-store' });
     if (!response.ok) {
-      console.warn('Failed to fetch image:', sourceImage.file.url);
+      console.warn('Failed to fetch image:', sourceImageUrl);
       return null;
     }
 
