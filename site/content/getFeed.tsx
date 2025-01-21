@@ -93,7 +93,10 @@ const getFeed = cache(
       };
 
       itemPromises.push(
-        cacheFeedImage(page).then(imageUrl => ({
+        (item.embed != null
+          ? Promise.resolve(null)
+          : cacheFeedImage(page)
+        ).then(imageUrl => ({
           ...item,
           imageUrl,
         })),
