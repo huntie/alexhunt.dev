@@ -25,7 +25,7 @@ export default function Hero({
         priority
       />
       <h1 className="mb-8 font-display font-bold text-primary">{title}</h1>
-      <p className="mb-18 text-primary">{bio}</p>
+      <p className="mb-20 text-primary">{bio}</p>
       <FollowButton handle={twitterHandle} />
     </div>
   );
