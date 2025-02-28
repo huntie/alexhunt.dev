@@ -40,7 +40,7 @@ export default function FeedItem({
           </h2>
         ) : null}
         {content != null ? (
-          <p className="pr-8 text-primary font-display">
+          <p className="pr-8 text-primary font-display whitespace-pre-wrap">
             {type === 'post' ? formatPost(content) : content}
           </p>
         ) : null}
