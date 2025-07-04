@@ -12,7 +12,7 @@ type Props = Readonly<{
  * Content feed (client component). Receives a list of `initialItems` and
  * fetches additional items on scroll.
  */
-export default function Feed({ initialItems }: Props): JSX.Element {
+export default function Feed({ initialItems }: Props) {
   // TODO: Item fetching on scroll
   return (
     <div>
