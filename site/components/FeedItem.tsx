@@ -9,7 +9,7 @@ type Props = Readonly<{
 
 export default function FeedItem({
   item: { type, title, content, date, url, label, imageUrl, embed },
-}: Props): JSX.Element {
+}: Props) {
   const isBlockLink = embed == null;
 
   return (
@@ -80,7 +80,7 @@ function formatDate(date: string): string {
     : format(parsed, 'dd MMM yyyy');
 }
 
-function formatPost(post: string): JSX.Element {
+function formatPost(post: string) {
   const highlightRegex = /[@#$]\w+|https?:\/\/\S+/g;
   const elements = [];
 

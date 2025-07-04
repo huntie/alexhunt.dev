@@ -8,12 +8,7 @@ type Props = Readonly<{
   twitterHandle: string;
 }>;
 
-export default function Hero({
-  title,
-  bio,
-  imageUrl,
-  twitterHandle,
-}: Props): JSX.Element {
+export default function Hero({ title, bio, imageUrl, twitterHandle }: Props) {
   return (
     <div className="flex flex-col items-start mb-30">
       <Image

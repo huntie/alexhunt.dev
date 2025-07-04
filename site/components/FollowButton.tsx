@@ -2,7 +2,7 @@ type Props = Readonly<{
   handle: string;
 }>;
 
-export default function FollowButton({ handle }: Props): JSX.Element {
+export default function FollowButton({ handle }: Props) {
   return (
     <a
       className="flex px-12 items-center rounded-full bg-social-x text-white transition duration-150 hover:opacity-80"

@@ -2,7 +2,7 @@ type Props = Readonly<{
   links: Array<string>;
 }>;
 
-export default function SocialLinks({ links }: Props): JSX.Element {
+export default function SocialLinks({ links }: Props) {
   return (
     <nav className="flex flex-col items-start">
       {links.map(link => (
