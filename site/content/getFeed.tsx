@@ -4,11 +4,12 @@ import type { FeedItem } from './types';
 
 import { isFullPage } from '@notionhq/client';
 import invariant from 'invariant';
-import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
 import cacheFeedImage from './cacheFeedImage';
 import { notion, richTextToPlain } from './notion';
 
 const FEED_DATABASE_ID = '341919861c8447ea8a6ae36b0ad8c730';
+const CACHE_DURATION = 60 * 5; // 5 minutes
 
 const NONEMPTY_FILTER = {
   is_not_empty: true as true,
@@ -19,7 +20,7 @@ type Options = Readonly<{
   pageSize?: number;
 }>;
 
-const getFeed = cache(
+const getFeed = unstable_cache(
   async ({ startCursor, pageSize = 10 }: Options = {}): Promise<
     Array<FeedItem>
   > => {
@@ -104,6 +105,10 @@ const getFeed = cache(
     }
 
     return Promise.all(itemPromises);
+  },
+  [],
+  {
+    revalidate: CACHE_DURATION,
   },
 );
 
