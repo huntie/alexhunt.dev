@@ -1,13 +1,10 @@
 {
   "private": true,
-  "workspaces": [
-    "site"
-  ],
   "scripts": {
-    "dev": "yarn --cwd site next dev",
-    "build": "yarn --cwd site next build",
-    "start": "yarn --cwd site next start",
-    "lint": "yarn --cwd site lint",
+    "dev": "pnpm --filter alexhunt.dev run dev",
+    "build": "pnpm --filter alexhunt.dev run build",
+    "start": "pnpm --filter alexhunt.dev run start",
+    "lint": "pnpm --filter alexhunt.dev run lint",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
@@ -16,5 +13,5 @@
     "prettier-plugin-organize-imports": "^3.2.4",
     "typescript": "^5.5.4"
   },
-  "packageManager": "yarn@4.2.2"
+  "packageManager": "pnpm@9.0.0"
 }

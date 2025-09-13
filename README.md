@@ -6,7 +6,7 @@ Source code for my personal website. Built with [Next.js](https://nextjs.org/).
 
 Start development server:
 
-    yarn dev
+    pnpm dev
 
 ## License
 

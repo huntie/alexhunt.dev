@@ -24,7 +24,7 @@
         "type": "node-terminal",
         "request": "launch",
         "cwd": "${workspaceFolder}/site",
-        "command": "yarn dev",
+        "command": "pnpm dev",
         "serverReadyAction": {
           "pattern": "- Local:.+(https?://.+)",
           "uriFormat": "%s",
