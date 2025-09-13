@@ -13,17 +13,16 @@
   "settings": {
     "editor.formatOnSave": true,
     "search.exclude": {
-      "**/.next": true
+      ".next": true
     }
   },
   "launch": {
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "site: Next.js dev",
+        "name": "Next.js dev",
         "type": "node-terminal",
         "request": "launch",
-        "cwd": "${workspaceFolder}/site",
         "command": "pnpm dev",
         "serverReadyAction": {
           "pattern": "- Local:.+(https?://.+)",

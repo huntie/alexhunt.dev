@@ -1,5 +1,5 @@
 /** @type {import('prettier').Config} */
-module.exports = {
+const config = {
   arrowParens: 'avoid',
   singleQuote: true,
   trailingComma: 'all',
@@ -13,3 +13,5 @@ module.exports = {
     },
   ],
 };
+
+export default config;
