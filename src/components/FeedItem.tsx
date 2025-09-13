@@ -16,36 +16,36 @@ export default function FeedItem({
     <article className="group relative z-0 mb-60">
       {isBlockLink ? (
         <a
-          className="absolute block -z-10 -top-16 -bottom-16 -left-16 -right-16 rounded-md text-secondary text-sm transition duration-150 group-hover:bg-grey-lightest"
+          className="text-secondary group-hover:bg-grey-lightest absolute -top-16 -right-16 -bottom-16 -left-16 -z-10 block rounded-md text-sm transition duration-150"
           href={url}
         />
       ) : null}
       <div
         className={`flex flex-col items-start ${isBlockLink ? 'pointer-events-none' : ''}`}
       >
-        <div className="flex items-center mb-8">
-          <p className="mr-16 text-secondary text-xs font-body">
+        <div className="mb-8 flex items-center">
+          <p className="text-secondary font-body mr-16 text-xs">
             <time dateTime={date}>{formatDate(date)}</time>
             {type === 'post' ? <>&ensp;•&ensp;View on X</> : null}
           </p>
           {label != null ? (
-            <span className="px-8 py-2 rounded-md bg-grey-light text-secondary text-xs">
+            <span className="bg-grey-light text-secondary rounded-md px-8 py-2 text-xs">
               {label}
             </span>
           ) : null}
         </div>
         {title != null ? (
-          <h2 className="mb-4 pr-8 text-primary font-display font-medium">
+          <h2 className="text-primary font-display mb-4 pr-8 font-medium">
             {title}
           </h2>
         ) : null}
         {content != null ? (
-          <p className="pr-8 text-primary font-display whitespace-pre-wrap">
+          <p className="text-primary font-display pr-8 whitespace-pre-wrap">
             {type === 'post' ? formatPost(content) : content}
           </p>
         ) : null}
         {imageUrl != null ? (
-          <div className="relative aspect-video h-140 md:h-180 mt-18 rounded-md bg-light-grey overflow-hidden">
+          <div className="bg-light-grey relative mt-18 aspect-video h-140 overflow-hidden rounded-md md:h-180">
             <Image
               className="object-cover"
               src={imageUrl}

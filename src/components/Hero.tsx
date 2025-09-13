@@ -10,17 +10,17 @@ type Props = Readonly<{
 
 export default function Hero({ title, bio, imageUrl, twitterHandle }: Props) {
   return (
-    <div className="flex flex-col items-start mb-30">
+    <div className="mb-30 flex flex-col items-start">
       <Image
-        className="mb-24 rounded-full bg-light-grey"
+        className="bg-light-grey mb-24 rounded-full"
         width="45"
         height="45"
         src={imageUrl}
         alt="Profile image"
         priority
       />
-      <h1 className="mb-8 font-display font-bold text-primary">{title}</h1>
-      <p className="mb-20 text-primary">{bio}</p>
+      <h1 className="font-display text-primary mb-8 font-bold">{title}</h1>
+      <p className="text-primary mb-20">{bio}</p>
       <FollowButton handle={twitterHandle} />
     </div>
   );

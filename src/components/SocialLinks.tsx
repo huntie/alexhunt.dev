@@ -7,7 +7,7 @@ export default function SocialLinks({ links }: Props) {
     <nav className="flex flex-col items-start">
       {links.map(link => (
         <a
-          className="flex mb-4 -ml-8 -mt-4 px-8 py-4 rounded-md text-secondary text-sm transition duration-150 hover:bg-grey-lightest"
+          className="text-secondary hover:bg-grey-lightest -mt-4 mb-4 -ml-8 flex rounded-md px-8 py-4 text-sm transition duration-150"
           key={link}
           href={link}
         >

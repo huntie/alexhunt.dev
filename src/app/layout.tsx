@@ -29,8 +29,8 @@ export default async function RootLayout({
   return (
     <html lang="en-GB">
       <body className={inter.className}>
-        <div className="max-w-560 md:max-w-1800 mx-auto md:flex">
-          <header className="flex flex-col mx-30 py-60 md:justify-between md:h-screen md:max-w-325 md:ml-40 md:py-80 lg:mx-85">
+        <div className="mx-auto max-w-560 md:flex md:max-w-1800">
+          <header className="mx-30 flex flex-col py-60 md:ml-40 md:h-screen md:max-w-325 md:justify-between md:py-80 lg:mx-85">
             <Hero
               title="Alex Hunt"
               bio={bio}
@@ -44,7 +44,7 @@ export default async function RootLayout({
               ]}
             />
           </header>
-          <main className="flex flex-1 flex-col items-center px-30 md:h-screen md:overflow-y-scroll md:pl-16 md:-ml-16 md:py-80 lg:pr-85">
+          <main className="flex flex-1 flex-col items-center px-30 md:-ml-16 md:h-screen md:overflow-y-scroll md:py-80 md:pl-16 lg:pr-85">
             <div className="md:max-w-560">{children}</div>
           </main>
         </div>
