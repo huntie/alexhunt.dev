@@ -14,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const { bio } = await getProperties();
 
   return {
-    title: 'Alex Hunt – Software Engineer',
     description: bio,
+    title: 'Alex Hunt – Software Engineer',
   };
 }
 
@@ -32,9 +32,9 @@ export default async function RootLayout({
         <div className="max-w-560 md:max-w-1800 mx-auto md:flex">
           <header className="flex flex-col mx-30 py-60 md:justify-between md:h-screen md:max-w-325 md:ml-40 md:py-80 lg:mx-85">
             <Hero
-              title="Alex Hunt"
               bio={bio}
               imageUrl="/profile.jpg"
+              title="Alex Hunt"
               twitterHandle="huntie"
             />
             <SocialLinks

@@ -8,7 +8,7 @@ type Props = Readonly<{
 }>;
 
 export default function FeedItem({
-  item: { type, title, content, date, url, label, imageUrl, embed },
+  item: { content, date, embed, imageUrl, label, title, type, url },
 }: Props) {
   const isBlockLink = embed == null;
 
@@ -47,11 +47,11 @@ export default function FeedItem({
         {imageUrl != null ? (
           <div className="relative aspect-video h-140 md:h-180 mt-18 rounded-md bg-light-grey overflow-hidden">
             <Image
-              className="object-cover"
-              src={imageUrl}
               alt={type === 'post' ? 'Post image' : 'Link preview'}
+              className="object-cover"
               fill
               sizes="640px,960px" // @2x, @3x
+              src={imageUrl}
             />
           </div>
         ) : null}
@@ -81,7 +81,7 @@ function formatDate(date: string): string {
 }
 
 function formatPost(post: string) {
-  const highlightRegex = /[@#$]\w+|https?:\/\/\S+/g;
+  const highlightRegex = /[#$@]\w+|https?:\/\/\S+/g;
   const elements = [];
 
   let match: RegExpExecArray | null;
@@ -105,9 +105,9 @@ function formatPost(post: string) {
 
     elements.push(
       <a
-        key={match.index}
-        href={url}
         className="text-link pointer-events-auto hover:brightness-90 dark:hover:brightness-110"
+        href={url}
+        key={match.index}
       >
         {token}
       </a>,
