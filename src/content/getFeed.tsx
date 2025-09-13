@@ -12,7 +12,7 @@ const FEED_DATABASE_ID = '341919861c8447ea8a6ae36b0ad8c730';
 const CACHE_DURATION = 60 * 5; // 5 minutes
 
 const NONEMPTY_FILTER = {
-  is_not_empty: true as true,
+  is_not_empty: true as const,
 };
 
 type Options = Readonly<{

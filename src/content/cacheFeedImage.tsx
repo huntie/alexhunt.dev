@@ -31,7 +31,7 @@ const cacheFeedImage = unstable_cache(
         : null;
     }
 
-    let sourceImageUrl = await resolveFeedItemPreview(page);
+    const sourceImageUrl = await resolveFeedItemPreview(page);
     if (sourceImageUrl == null) {
       await put(cachePrefix + '/' + EMPTY_CONTENT_MARKER, '{}', {
         access: 'public',
@@ -43,6 +43,7 @@ const cacheFeedImage = unstable_cache(
     // Fetch remote image
     const response = await fetch(sourceImageUrl, { cache: 'no-store' });
     if (!response.ok) {
+      // eslint-disable-next-line no-console
       console.warn('Failed to fetch image:', sourceImageUrl);
       return null;
     }
@@ -58,8 +59,9 @@ const cacheFeedImage = unstable_cache(
       });
 
       return result.url;
-    } catch (e) {
-      console.error('Failed to process image:', e);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to process image:', error);
       return null;
     }
   },

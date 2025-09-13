@@ -17,7 +17,7 @@ export default function Feed({ initialItems }: Props) {
   return (
     <div>
       {initialItems.map(item => (
-        <FeedItem item={item} key={item.id} />
+        <FeedItem key={item.id} item={item} />
       ))}
     </div>
   );
