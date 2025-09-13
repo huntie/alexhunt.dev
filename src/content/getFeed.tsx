@@ -96,7 +96,10 @@ const getFeed = unstable_cache(
       itemPromises.push(
         (item.embed != null
           ? Promise.resolve(null)
-          : cacheFeedImage(page)
+          : cacheFeedImage({
+              id: page.id,
+              lastEditedTime: page.last_edited_time,
+            })
         ).then(imageUrl => ({
           ...item,
           imageUrl,

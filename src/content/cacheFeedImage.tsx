@@ -1,21 +1,28 @@
-import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+'use server';
 
+import { isFullPage } from '@notionhq/client';
 import { list, put } from '@vercel/blob';
 import invariant from 'invariant';
 import { unstable_cache } from 'next/cache';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import openGraph from 'open-graph-scraper';
+import { notion } from './notion';
 
 const EMPTY_CONTENT_MARKER = 'no-content.json';
+
+type FeedItemKey = {
+  id: string;
+  lastEditedTime: string;
+};
 
 /**
  * Cache the preview image for the given feed item on the server/CDN.
  */
 const cacheFeedImage = unstable_cache(
-  async (page: PageObjectResponse): Promise<string | null> => {
+  async ({ id, lastEditedTime }: FeedItemKey): Promise<string | null> => {
     const imageKey = createHash('sha256')
-      .update(page.id + '-' + page.last_edited_time)
+      .update(id + '-' + lastEditedTime)
       .digest('hex')
       .slice(0, 16);
     const cachePrefix = 'feed_v2/' + imageKey;
@@ -31,7 +38,7 @@ const cacheFeedImage = unstable_cache(
         : null;
     }
 
-    const sourceImageUrl = await resolveFeedItemPreview(page);
+    const sourceImageUrl = await resolveFeedItemPreview({ id, lastEditedTime });
     if (sourceImageUrl == null) {
       await put(cachePrefix + '/' + EMPTY_CONTENT_MARKER, '{}', {
         access: 'public',
@@ -67,18 +74,23 @@ const cacheFeedImage = unstable_cache(
   },
 );
 
-export default cacheFeedImage;
+async function resolveFeedItemPreview({
+  id,
+}: FeedItemKey): Promise<string | null> {
+  const page = await notion.pages.retrieve({
+    page_id: id,
+  });
 
-async function resolveFeedItemPreview(
-  page: PageObjectResponse,
-): Promise<string | null> {
-  invariant(
-    page.properties['Image']?.type === 'files',
-    'Expected property "Image" to be of type "files"',
-  );
+  if (!isFullPage(page)) {
+    return null;
+  }
   invariant(
     page.properties['URL']?.type === 'url',
     'Expected property "URL" to be of type "url"',
+  );
+  invariant(
+    page.properties['Image']?.type === 'files',
+    'Expected property "Image" to be of type "files"',
   );
 
   // Check custom image field in page
@@ -94,3 +106,5 @@ async function resolveFeedItemPreview(
 
   return ogImage?.url;
 }
+
+export default cacheFeedImage;
