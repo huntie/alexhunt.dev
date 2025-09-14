@@ -3,10 +3,13 @@
 import type { FeedItem } from './types';
 
 import { isFullPage } from '@notionhq/client';
+import Debug from 'debug';
 import invariant from 'invariant';
 import { unstable_cache } from 'next/cache';
 import cacheFeedImage from './cacheFeedImage';
 import { notion, richTextToPlain } from './notion';
+
+const debug = Debug('server:getFeed');
 
 const FEED_DATABASE_ID = '341919861c8447ea8a6ae36b0ad8c730';
 const CACHE_DURATION = 60 * 5; // 5 minutes
@@ -24,6 +27,8 @@ const getFeed = unstable_cache(
   async ({ startCursor, pageSize = 10 }: Options = {}): Promise<
     Array<FeedItem>
   > => {
+    debug('Cache miss, fetching content feed from Notion');
+
     const response = await notion.databases.query({
       database_id: FEED_DATABASE_ID,
       filter: {
