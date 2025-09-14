@@ -23,13 +23,11 @@ type Options = Readonly<{
   pageSize?: number;
 }>;
 
-const getFeed = unstable_cache(
-  async ({ startCursor, pageSize = 10 }: Options = {}): Promise<
-    Array<FeedItem>
-  > => {
+const queryFeedDatabase = unstable_cache(
+  ({ startCursor, pageSize = 10 }: Options = {}) => {
     logger.debug('Cache miss, fetching content feed from Notion');
 
-    const response = await notion.databases.query({
+    return notion.databases.query({
       database_id: FEED_DATABASE_ID,
       filter: {
         and: [
@@ -51,68 +49,6 @@ const getFeed = unstable_cache(
       start_cursor: startCursor,
       page_size: pageSize,
     });
-    const itemPromises: Array<Promise<FeedItem>> = [];
-
-    for (const page of response.results) {
-      if (!isFullPage(page)) {
-        continue;
-      }
-
-      invariant(
-        page.properties['Date']?.type === 'date',
-        'Expected property "Date" to be of type "date"',
-      );
-      invariant(
-        page.properties['Type']?.type === 'select',
-        'Expected property "Type" to be of type "select"',
-      );
-      invariant(
-        page.properties['Label']?.type === 'select',
-        'Expected property "Label" to be of type "select"',
-      );
-      invariant(
-        page.properties['URL']?.type === 'url',
-        'Expected property "URL" to be of type "url"',
-      );
-      invariant(
-        page.properties['Title']?.type === 'title',
-        'Expected property "Title" to be of type "title"',
-      );
-      invariant(
-        page.properties['Content']?.type === 'rich_text',
-        'Expected property "Content" to be of type "rich_text"',
-      );
-      invariant(
-        page.properties['Embed']?.type === 'rich_text',
-        'Expected property "Embed" to be of type "rich_text"',
-      );
-
-      const item: Omit<FeedItem, 'imageUrl'> = {
-        id: page.id,
-        date: page.properties['Date'].date!.start,
-        type: page.properties['Type'].select!.name === 'Post' ? 'post' : 'link',
-        label: page.properties['Label'].select?.name ?? null,
-        url: page.properties['URL'].url!,
-        title: richTextToPlain(page.properties['Title'].title),
-        content: richTextToPlain(page.properties['Content'].rich_text),
-        embed: richTextToPlain(page.properties['Embed'].rich_text),
-      };
-
-      itemPromises.push(
-        (item.embed != null
-          ? Promise.resolve(null)
-          : cacheFeedImage({
-              id: page.id,
-              lastEditedTime: page.last_edited_time,
-            })
-        ).then(imageUrl => ({
-          ...item,
-          imageUrl,
-        })),
-      );
-    }
-
-    return Promise.all(itemPromises);
   },
   [],
   {
@@ -120,4 +56,74 @@ const getFeed = unstable_cache(
   },
 );
 
-export default getFeed;
+export default async function getFeed({
+  startCursor,
+  pageSize = 10,
+}: Options = {}): Promise<Array<FeedItem>> {
+  const response = await queryFeedDatabase({
+    startCursor,
+    pageSize,
+  });
+  const itemPromises: Array<Promise<FeedItem>> = [];
+
+  for (const page of response.results) {
+    if (!isFullPage(page)) {
+      continue;
+    }
+
+    invariant(
+      page.properties['Date']?.type === 'date',
+      'Expected property "Date" to be of type "date"',
+    );
+    invariant(
+      page.properties['Type']?.type === 'select',
+      'Expected property "Type" to be of type "select"',
+    );
+    invariant(
+      page.properties['Label']?.type === 'select',
+      'Expected property "Label" to be of type "select"',
+    );
+    invariant(
+      page.properties['URL']?.type === 'url',
+      'Expected property "URL" to be of type "url"',
+    );
+    invariant(
+      page.properties['Title']?.type === 'title',
+      'Expected property "Title" to be of type "title"',
+    );
+    invariant(
+      page.properties['Content']?.type === 'rich_text',
+      'Expected property "Content" to be of type "rich_text"',
+    );
+    invariant(
+      page.properties['Embed']?.type === 'rich_text',
+      'Expected property "Embed" to be of type "rich_text"',
+    );
+
+    const item: Omit<FeedItem, 'imageUrl'> = {
+      id: page.id,
+      date: page.properties['Date'].date!.start,
+      type: page.properties['Type'].select!.name === 'Post' ? 'post' : 'link',
+      label: page.properties['Label'].select?.name ?? null,
+      url: page.properties['URL'].url!,
+      title: richTextToPlain(page.properties['Title'].title),
+      content: richTextToPlain(page.properties['Content'].rich_text),
+      embed: richTextToPlain(page.properties['Embed'].rich_text),
+    };
+
+    itemPromises.push(
+      (item.embed != null
+        ? Promise.resolve(null)
+        : cacheFeedImage({
+            id: page.id,
+            lastEditedTime: page.last_edited_time,
+          })
+      ).then(imageUrl => ({
+        ...item,
+        imageUrl,
+      })),
+    );
+  }
+
+  return Promise.all(itemPromises);
+}

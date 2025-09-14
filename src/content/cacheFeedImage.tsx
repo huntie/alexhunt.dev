@@ -47,7 +47,10 @@ const cacheFeedImage = unstable_cache(
         : null;
     }
 
-    logger.debug('No previous image found in cache. Page ID: %s', id);
+    logger.debug(
+      'No previous image in blob store, fetching from source. Page ID: %s',
+      id,
+    );
 
     const sourceImageUrl = await resolveFeedItemPreview({ id, lastEditedTime });
     if (sourceImageUrl == null) {
