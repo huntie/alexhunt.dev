@@ -16,7 +16,7 @@ export default function FeedItem({
     <article className="group relative z-0 mb-60">
       {isBlockLink ? (
         <a
-          className="text-secondary group-hover:bg-grey-lightest absolute -top-16 -right-16 -bottom-16 -left-16 -z-10 block rounded-md text-sm transition duration-150"
+          className="text-secondary group-hover:bg-grey-lightest absolute -top-16 -right-16 -bottom-16 -left-16 -z-10 block rounded-xl text-sm transition duration-150"
           href={url}
         />
       ) : null}
@@ -29,7 +29,7 @@ export default function FeedItem({
             {type === 'post' ? <>&ensp;•&ensp;View on X</> : null}
           </p>
           {label != null ? (
-            <span className="bg-grey-light text-secondary rounded-md px-8 py-2 text-xs">
+            <span className="bg-grey-light text-secondary rounded-xl px-8 py-2 text-xs">
               {label}
             </span>
           ) : null}
@@ -45,7 +45,7 @@ export default function FeedItem({
           </p>
         ) : null}
         {imageUrl != null ? (
-          <div className="bg-light-grey relative mt-18 aspect-video h-140 overflow-hidden rounded-md md:h-180">
+          <div className="bg-light-grey relative mt-18 aspect-video h-140 overflow-hidden rounded-lg md:h-180">
             <Image
               className="object-cover"
               src={imageUrl}

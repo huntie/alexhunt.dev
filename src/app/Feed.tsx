@@ -21,7 +21,7 @@ export default function Feed({ initialItems }: Props) {
       ))}
       <div className="pb-40 md:pb-0">
         <a
-          className="bg-grey-lightest text-secondary hover:bg-grey-light block w-full rounded-md py-12 text-center text-sm transition duration-150"
+          className="bg-grey-lightest text-secondary hover:bg-grey-light block w-full rounded-xl py-12 text-center text-sm transition duration-150"
           href="https://x.com/huntie/highlights"
         >
           View more highlights
