@@ -45,7 +45,7 @@ export default async function RootLayout({
             />
           </header>
           <main className="flex flex-1 flex-col items-center px-30 md:-ml-16 md:h-screen md:overflow-y-scroll md:py-80 md:pl-16 lg:pr-85">
-            <div className="md:max-w-560">{children}</div>
+            <div className="w-full md:max-w-560 xl:max-w-640">{children}</div>
           </main>
         </div>
         <Analytics />

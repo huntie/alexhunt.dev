@@ -24,7 +24,7 @@ type Options = Readonly<{
 }>;
 
 const queryFeedDatabase = unstable_cache(
-  ({ startCursor, pageSize = 10 }: Options = {}) => {
+  ({ startCursor, pageSize = 20 }: Options = {}) => {
     logger.debug('Cache miss, fetching content feed from Notion');
 
     return notion.databases.query({
@@ -58,7 +58,7 @@ const queryFeedDatabase = unstable_cache(
 
 export default async function getFeed({
   startCursor,
-  pageSize = 10,
+  pageSize = 20,
 }: Options = {}): Promise<Array<FeedItem>> {
   const response = await queryFeedDatabase({
     startCursor,
@@ -95,11 +95,6 @@ export default async function getFeed({
       page.properties['Content']?.type === 'rich_text',
       'Expected property "Content" to be of type "rich_text"',
     );
-    invariant(
-      page.properties['Embed']?.type === 'rich_text',
-      'Expected property "Embed" to be of type "rich_text"',
-    );
-
     const item: Omit<FeedItem, 'imageUrl'> = {
       id: page.id,
       date: page.properties['Date'].date!.start,
@@ -108,17 +103,13 @@ export default async function getFeed({
       url: page.properties['URL'].url!,
       title: richTextToPlain(page.properties['Title'].title),
       content: richTextToPlain(page.properties['Content'].rich_text),
-      embed: richTextToPlain(page.properties['Embed'].rich_text),
     };
 
     itemPromises.push(
-      (item.embed != null
-        ? Promise.resolve(null)
-        : cacheFeedImage({
-            id: page.id,
-            lastEditedTime: page.last_edited_time,
-          })
-      ).then(imageUrl => ({
+      cacheFeedImage({
+        id: page.id,
+        lastEditedTime: page.last_edited_time,
+      }).then(imageUrl => ({
         ...item,
         imageUrl,
       })),

@@ -7,5 +7,4 @@ export type FeedItem = {
   title: string | null;
   content: string | null;
   imageUrl: string | null;
-  embed: string | null;
 };
