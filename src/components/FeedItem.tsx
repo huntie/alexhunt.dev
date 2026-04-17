@@ -67,8 +67,8 @@ export default function FeedItem({
           <div
             className={`bg-light-grey relative overflow-hidden rounded-lg${
               isCard
-                ? ' aspect-video self-stretch'
-                : ' mt-18 aspect-video w-full md:max-w-[400px]'
+                ? ' aspect-video self-stretch max-w-[280px] sm:max-w-[360px] @[400px]:max-w-none'
+                : ' mt-18 aspect-video w-full max-w-[280px] sm:max-w-[360px]'
             }`}
           >
             <Image

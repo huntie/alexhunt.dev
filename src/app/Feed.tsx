@@ -29,7 +29,7 @@ export default function Feed({ initialItems }: Props) {
       ) : null}
       {cards.length > 0 ? (
         <div className="@container mb-60">
-          <div className="grid grid-cols-1 gap-24 @[400px]:grid-cols-2">
+          <div className="grid grid-cols-1 gap-60 @[400px]:grid-cols-2 @[400px]:gap-24">
             {cards.map(item => (
               <FeedItem key={item.id} item={item} variant="card" />
             ))}
@@ -38,7 +38,7 @@ export default function Feed({ initialItems }: Props) {
       ) : null}
       {yearGroups.map(([year, items], index) => (
         <div key={year} className={index > 0 ? 'mt-40' : ''}>
-          <p className="text-primary font-body mb-16 mt-8 text-sm">{year}</p>
+          <p className="text-primary font-body mt-8 mb-16 text-sm">{year}</p>
           {items.map(item => (
             <FeedItem key={item.id} item={item} variant="row" />
           ))}
