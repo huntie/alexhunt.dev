@@ -2,14 +2,13 @@
 
 import type { FeedItem as FeedItemType } from '../content/types.tsx';
 
+import { ArrowUpRightIcon } from '@heroicons/react/16/solid';
 import { parseISO } from 'date-fns';
 import FeedItem from '../components/FeedItem.tsx';
 
 type Props = Readonly<{
   initialItems: Array<FeedItemType>;
 }>;
-
-const commitHash = process.env.NEXT_PUBLIC_COMMIT_HASH ?? 'unknown';
 
 /**
  * Content feed (client component).
@@ -46,19 +45,12 @@ export default function Feed({ initialItems }: Props) {
       ))}
       <div className="mt-60 pb-40 md:pb-0">
         <a
-          className="bg-grey-lightest text-secondary hover:bg-grey-light block w-full rounded-xl py-12 text-center text-sm transition duration-150"
+          className="bg-grey-lightest text-secondary hover:bg-grey-light flex w-full items-center justify-center gap-4 rounded-xl py-12 text-sm transition duration-150"
           href="https://x.com/huntie/highlights"
         >
-          View more highlights on X
+          View more highlights
+          <ArrowUpRightIcon className="size-[14px]" />
         </a>
-        <p className="text-tertiary mt-24 text-center text-xs">
-          <a
-            className="hover:text-secondary transition duration-150"
-            href="https://github.com/huntie/alexhunt.dev"
-          >
-            alexhunt.dev@{commitHash}
-          </a>
-        </p>
       </div>
     </div>
   );
