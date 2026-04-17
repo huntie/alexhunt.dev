@@ -1,7 +1,7 @@
 'use server';
 
 import { isFullPage } from '@notionhq/client';
-import { list, put } from '@vercel/blob';
+import { put } from '@vercel/blob';
 import invariant from 'invariant';
 import { unstable_cache } from 'next/cache';
 import { createHash } from 'node:crypto';
@@ -13,6 +13,7 @@ import { notion } from './notion';
 const logger = new Logger('server:cacheFeedImage');
 
 const EMPTY_CONTENT_MARKER = 'no-content.json';
+const ONE_YEAR = 60 * 60 * 24 * 365;
 
 type FeedItemKey = {
   id: string;
@@ -31,25 +32,10 @@ const cacheFeedImage = unstable_cache(
     const cachePrefix = 'feed_v2/' + imageKey;
 
     logger.debug(
-      'Cache miss, checking for existing blob. Page ID: %s, Cache prefix: %s',
+      'Cache miss. Page id: %s, lastEditedTime: %s, imageKey: %s',
       id,
-      cachePrefix,
-    );
-
-    // Check for existing blob
-    const {
-      blobs: [cachedImage],
-    } = await list({ prefix: cachePrefix });
-
-    if (cachedImage != null) {
-      return path.basename(cachedImage.pathname) !== EMPTY_CONTENT_MARKER
-        ? cachedImage.url
-        : null;
-    }
-
-    logger.debug(
-      'No previous image in blob store, fetching from source. Page ID: %s',
-      id,
+      lastEditedTime,
+      imageKey,
     );
 
     const sourceImageUrl = await resolveFeedItemPreview({ id, lastEditedTime });
@@ -57,6 +43,7 @@ const cacheFeedImage = unstable_cache(
       await put(cachePrefix + '/' + EMPTY_CONTENT_MARKER, '{}', {
         access: 'public',
         addRandomSuffix: false,
+        cacheControlMaxAge: ONE_YEAR,
       });
       return null;
     }
@@ -76,6 +63,7 @@ const cacheFeedImage = unstable_cache(
       const result = await put(cachePath, response.body!, {
         access: 'public',
         addRandomSuffix: false,
+        cacheControlMaxAge: ONE_YEAR,
       });
       logger.debug(
         'Successfully uploaded preview image to Vercel Blob. Blob path: %s',
@@ -87,6 +75,7 @@ const cacheFeedImage = unstable_cache(
       return null;
     }
   },
+  ['cacheFeedImage'],
 );
 
 async function resolveFeedItemPreview({
